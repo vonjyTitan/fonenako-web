@@ -1,0 +1,55 @@
+<h1>Liste de bien à louer</h1>
+<h2>Recherche :</h2>
+<table>
+    <tr>
+      <td><p>Surface min :</p></td>
+      <td><input type="number" [(ngModel)]="leaseOfferFilter.surfaceMin" placeholder="ex : 30"/></td>
+      <td><p>Surface max : </p></td>
+      <td><input type="number" [(ngModel)]="leaseOfferFilter.surfaceMax" placeholder="ex : 60"/></td>
+    </tr>
+</table>
+<table>
+    <tr>
+      <td><p>Budget min :</p></td>
+      <td><input type="number" [(ngModel)]="leaseOfferFilter.monthlyRentMin" placeholder="ex : 700"/></td>
+      <td><p>Budget max : </p></td>
+      <td><input type="number" [(ngModel)]="leaseOfferFilter.monthlyRentMax" placeholder="ex : 1500"/></td>
+    </tr>
+</table>
+<table>
+    <tr>
+      <td><p>Nombre de pièces : </p></td>
+      <td><input type="number" [(ngModel)]="leaseOfferFilter.rooms" placeholder="ex : 3"/></td>
+    </tr>
+</table>
+<table>
+  <tr>
+    <td><button (click)="searchLeaseOffer()" [disabled]="!leaseOfferFilter.surfaceMin && !leaseOfferFilter.surfaceMax && !leaseOfferFilter.monthlyRentMin && !leaseOfferFilter.monthlyRentMax && !leaseOfferFilter.rooms">Chercher</button></td>
+    <td><button (click)="resetSearchLeaseOffer()">Reinitialiser</button></td>
+  </tr>
+</table>
+<h2>Resultat :</h2>
+<section>Ordoner par :     
+  <select [(ngModel)]="sortInfo.field"  (change)="sortOptionChanged()">
+    <option *ngFor="let sortOption of sortOptions" [ngValue]="sortOption.key">{{sortOption.value}}</option>
+  </select>
+  <select [(ngModel)]="sortInfo.direction" (change)="sortOptionChanged()">
+    <option value="Asc">Asc</option>
+    <option value="Desc">Desc</option>
+  </select>
+</section>
+<ul>
+    <li *ngFor="let leaseOffer of leaseOfferList">
+        <p>{{leaseOffer.surface}} m2 - {{leaseOffer.rooms}} Pièces - {{leaseOffer.monthlyRent}} €/mois <a [routerLink]="['/Lease-offers', leaseOffer.leaseOfferId]">Voir</a></p>
+    </li>
+  </ul>
+  <div>
+    <ul>
+        <li *ngFor="let pageInfo of pageList">
+            <a *ngIf="pageInfo.isCurrentPage; else requestablePageTemplate">{{pageInfo.pageIndex}}</a>
+            <ng-template #requestablePageTemplate>      
+                <a href="#" (click)="requestPage(pageInfo)">{{pageInfo.pageIndex}}</a>
+            </ng-template>
+        </li>
+    </ul>
+  </div>
